@@ -286,3 +286,47 @@ exports.updateBook = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+exports.getBookById = async (req, res) => {
+  const { book_id } = req.params; // Get the book_id from URL parameters
+
+  try {
+    const book = await Book.findOne({
+      where: { book_id },
+      include: { model: User, as: 'User', attributes: ['username'] },
+    });
+
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    res.json(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+exports.getUserById = async (req, res) => {
+  const { book_id } = req.params;
+
+  try {
+    const book = await Book.findOne({ where: { book_id } });
+
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    const user = await User.findByPk(book.user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the user's profile information
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+

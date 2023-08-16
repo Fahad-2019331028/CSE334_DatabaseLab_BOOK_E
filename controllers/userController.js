@@ -88,3 +88,13 @@ exports.getUserRating = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.getUserById = async (req,res) => {
+  const { book_id } = req.params;
+  try {
+    const user = await User.findOne({ where: { book_id } });
+    return user;
+  } catch (error) {
+    throw new Error('Error fetching user by user_id: ' + error.message);
+  }
+};
