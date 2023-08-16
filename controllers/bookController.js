@@ -6,16 +6,52 @@ const { Op } = require('sequelize');
 // const User = require('../models/User');
 const Order = require('../models/Order');
 exports.getAllBooks = async (req, res) => {
+  const page = req.query.page || 1; // Get the requested page from query parameters
+  const booksPerPage = 10; // Number of books per page
+
   try {
-    const books = await Book.findAll({
-      include: { model: User, as: 'User', attributes: ['username'] },
+    const { count, rows: books } = await Book.findAndCountAll({
+      include: {
+        model: User,
+        as: 'User',
+        attributes: ['username'],
+      },
+      attributes: ['book_id', 'title', 'author', 'genre', 'book_condition', 'is_for_sale', 'is_for_giveaway', 'is_for_loan', 'price', 'book_img_url'], // Add more attributes as needed
+      limit: booksPerPage,
+      offset: (page - 1) * booksPerPage,
     });
-    res.json(books);
+
+    const totalPages = Math.ceil(count / booksPerPage);
+    
+    // Modify book_type based on is_for_sale, is_for_giveaway, and is_for_loan attributes
+    // const modifiedBooks = books.map((book) => {
+    //   if (book.price) {
+    //     return {
+    //       ...book.toJSON(),
+    //       book_type: `Price: ${book.price}` // Display price for sale books
+    //     };
+    //   } else if (book.is_for_giveaway) {
+    //     return {
+    //       ...book.toJSON(),
+    //       book_type: 'Giveaway'
+    //     };
+    //   } else if (book.is_for_loan) {
+    //     return {
+    //       ...book.toJSON(),
+    //       book_type: 'Loan'
+    //     };
+    //   }
+    //   return book.toJSON(); // Return unchanged book if no conditions match
+    // });
+    // console.log(modifiedBooks)
+    res.json({ books, totalPages, currentPage: page });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
 
 exports.searchBooks = async (req, res) => {
   try {
@@ -124,23 +160,25 @@ exports.getOrderableBooks = async (req, res) => {
 
 
 exports.getBookById = async (req, res) => {
-  const bookId = req.params.id;
+  const user_id = req.params.user_id;
 
   try {
-    const book = await Book.findByPk(bookId, {
-      include: { model: User, as: 'User', attributes: ['username', 'profile_picture'] },
+    const books = await Book.findAll({
+      where: { user_id }, // Filter books by user_id
+      include: { model: User, as: 'User', attributes: ['username'] },
     });
 
-    if (!book) {
-      return res.status(404).json({ message: 'Book not found' });
+    if (!books || books.length === 0) {
+      return res.status(404).json({ message: 'No books found for the user' });
     }
 
-    res.json(book);
+    res.json(books);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 exports.addBook = async (req, res) => {
   try {

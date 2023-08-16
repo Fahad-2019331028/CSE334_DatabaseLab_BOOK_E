@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Rating = sequelize.define('Rating', {
-      id: {
+      rating_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           model: 'User',
-          key: 'id',
+          key: 'user_id',
         },
         allowNull: false,
       },
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           model: 'User',
-          key: 'id',
+          key: 'user_id',
         },
         allowNull: false,
       },
@@ -25,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      created_at: {
+      createdAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
-      updated_at: {
+      updatedAt: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
         onUpdate: DataTypes.NOW,
