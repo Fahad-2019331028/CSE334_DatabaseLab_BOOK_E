@@ -7,13 +7,14 @@ const authmiddleware = require('../middleware/authmiddleware');
 router.post('/place-order',authmiddleware, orderController.placeOrder);
 
 // Route to view user's placed orders
-router.get('/user-orders/:user_id',authmiddleware, orderController.getPlacedOrders);
+router.get('/user-orders',authmiddleware, orderController.getPlacedOrders);
 
 // Route to view user's received orders
-router.get('/received-orders/:user_id',authmiddleware, orderController.getReceivedOrders);
+router.get('/received-orders',authmiddleware, orderController.getReceivedOrders);
 
 // Route to confirm an order
 router.post('/confirm-order/:order_id',authmiddleware, orderController.confirmOrder);
+router.post('/discard-order/:order_id',authmiddleware, orderController.discardOrder);
 
 module.exports = router;
  

@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       is_confirmed: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER,
         defaultValue: false,
       },
       createdAt: {
@@ -44,11 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    // Define associations or methods here if needed
-    
-    // Order.belongsTo(User, { foreignKey: 'user_id' });
-    // Order.belongsTo(Book, { foreignKey: 'book_id' });
-
     return Order;
   };
 

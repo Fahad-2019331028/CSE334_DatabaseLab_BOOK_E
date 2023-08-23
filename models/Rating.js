@@ -1,43 +1,36 @@
+const db=require('../models/database')
+const User=db.users
 module.exports = (sequelize, DataTypes) => {
-    const Rating = sequelize.define('Rating', {
-      rating_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+  const Rating = sequelize.define('Rating', {
+    rating_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    rater_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'User',
+        key: 'user_id',
       },
-      user_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'User',
-          key: 'user_id',
-        },
-        allowNull: false,
+      allowNull: false,
+    },
+    recipient_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'User',
+        key: 'user_id',
       },
-      rated_user_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'User',
-          key: 'user_id',
-        },
-        allowNull: false,
-      },
-      rating: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        onUpdate: DataTypes.NOW,
-      },
-    });
-  
-    // Define associations or methods here if needed
-  
-    return Rating;
-  };
-  
+      allowNull: false,
+    },
+    rating: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },{
+    timestamps: false,
+  }
+  );
+
+  return Rating;
+};

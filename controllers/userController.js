@@ -1,5 +1,5 @@
 const db=require('../models/database')
-
+const bcrypt = require('bcryptjs');
 const User=db.users
 const Book=db.books
 // const Book = require('../models/Book');
@@ -11,7 +11,7 @@ exports.getUserProfile = async (req, res) => {
       attributes: { exclude: ['password'] }, // Exclude password from response
       include: [{ model: Book, as: 'Book' }], // Include user's books
     });
-
+ 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -24,7 +24,7 @@ exports.getUserProfile = async (req, res) => {
 };
 
 exports.editUserProfile = async (req, res) => {
-  const { name, email, phone_number, address } = req.body;
+  const { name, phone_number, address,username,profile_picture,email,password } = req.body;
 
   try {
     const user = await User.findByPk(req.user.user_id);
@@ -32,17 +32,18 @@ exports.editUserProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
 
     // Update user profile information
-    user.name = name;
-    user.email = email;
-    user.phone_number = phone_number;
-    user.address = address;
-    if(req.file)
-    {
-      user.profile_picture=req.file.path
-      console.log(req.file.path)
-    }
+    user.name = name?name:user.name;
+    user.email = email?email:user.email;
+    user.phone_number = phone_number?phone_number:user.phone_number;
+    user.address = address?address:user.address;
+    user.profile_picture= profile_picture?profile_picture:user.profile_picture;
+    user.username = username?username:user.username;
+    user.password = hashedPassword?hashedPassword:user.password;
     console.log(user)
     await user.save();
 
@@ -89,12 +90,14 @@ exports.getUserRating = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req,res) => {
-  const { book_id } = req.params;
+exports.getUserById = async (req, res) => {
+  const { user_id } = req.params;
   try {
-    const user = await User.findOne({ where: { book_id } });
-    return user;
+    const user = await User.findByPk(user_id);
+    res.json(user); // Send the user data as JSON response
   } catch (error) {
-    throw new Error('Error fetching user by user_id: ' + error.message);
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
+

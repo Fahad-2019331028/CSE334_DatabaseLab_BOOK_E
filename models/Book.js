@@ -22,11 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM('new', 'used'),
         allowNull: false,
       },
-      edition: {
-        type: DataTypes.STRING,
-      },
       price: {
         type: DataTypes.DECIMAL(10, 2),
+        allowNull:true
       },
       user_id: {
         type: DataTypes.INTEGER,
@@ -37,15 +35,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       is_for_sale: {
         type: DataTypes.BOOLEAN,
-        // defaultValue: false,
+        defaultValue: false,
       },
       is_for_loan: {
         type: DataTypes.BOOLEAN,
-        // defaultValue: false,
+        defaultValue: false,
       },
       is_for_giveaway: {
         type: DataTypes.BOOLEAN,
-        // defaultValue: false,
+        defaultValue: false,
       },
       genre: {
         type: DataTypes.STRING, // Assuming the genre is a string
@@ -55,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      transaction:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      }
 
     },{
       timestamps: false,

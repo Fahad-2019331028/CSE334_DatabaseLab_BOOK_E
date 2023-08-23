@@ -17,10 +17,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/book', require('./routes/bookRoutes'));
-app.use('/api/forum', require('./routes/forumRoutes'));
+// app.use('/api/forum', require('./routes/forumRoutes'));
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/order', require('./routes/orderRoutes'));
-
+app.use('/api/review', require('./routes/reviewRoutes'));
+app.use('/api/rating', require('./routes/ratingRoutes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -32,4 +33,4 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-});
+}); 

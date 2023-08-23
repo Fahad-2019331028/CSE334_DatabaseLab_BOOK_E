@@ -12,7 +12,7 @@ router.get('/search', bookController.searchBooks);
 router.get('/filter', bookController.filterBooks);
 router.get('/allbooks', bookController.getAllBooks);
 router.get('/book/:book_id', bookController.getBookById);
-router.get('/userbooks/:user_id',authmiddleware, bookController.getBookById);
+router.get('/userbooks/:user_id', bookController.getBooksById);
 // router.post('/', bookController.addBook);
 router.put('/:id', bookController.updateBook);
 router.delete('/:id', bookController.deleteBook);

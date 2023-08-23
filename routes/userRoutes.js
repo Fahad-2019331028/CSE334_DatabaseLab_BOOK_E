@@ -14,6 +14,8 @@ router.post('/login', authController.loginUser);
 
 // Get user profile (protected route)
 router.get('/profile', authMiddleware, userController.getUserProfile);
+
+router.get('/uploader-profile/:user_id', authMiddleware, userController.getUserById);
 // Edit user profile (protected route)
 router.put('/profile/edit', authMiddleware, upload("profile_picture").single("profile_picture"), userController.editUserProfile);
 
