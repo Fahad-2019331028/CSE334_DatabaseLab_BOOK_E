@@ -32,9 +32,14 @@ exports.editUserProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
+    let change=null;
+    let hashedPassword;
+    if(password)
+    {
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+      change=1;
+    }
 
     // Update user profile information
     user.name = name?name:user.name;
@@ -43,7 +48,7 @@ exports.editUserProfile = async (req, res) => {
     user.address = address?address:user.address;
     user.profile_picture= profile_picture?profile_picture:user.profile_picture;
     user.username = username?username:user.username;
-    user.password = hashedPassword?hashedPassword:user.password;
+    user.password = change?hashedPassword:user.password;
     console.log(user)
     await user.save();
 

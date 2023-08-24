@@ -10,6 +10,8 @@ exports.addRating = async (req, res) => {
     const existingRating = await Rating.findOne({
       where: { recipient_id: recipient_id, rater_id },
     });
+    if(rating>10 || rating <0)
+        return res.status(400).json({ message: 'The rating is out of bound'});
     if(recipient_id==rater_id)
         return res.status(400).json({ message: 'Cannot be rated'});
     if (existingRating) {
@@ -17,7 +19,7 @@ exports.addRating = async (req, res) => {
       await existingRating.save();
       return res.json({ message: 'Rating updated successfully', rating: existingRating });
     }
-
+ 
     const newRating = await Rating.create({
       rater_id,
       recipient_id: recipient_id,

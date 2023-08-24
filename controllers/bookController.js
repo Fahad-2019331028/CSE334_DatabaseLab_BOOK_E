@@ -62,7 +62,7 @@ exports.filterBooks = async (req, res) => {
     if (filters.genre) {
       whereClause.genre = filters.genre;
     }
-
+    whereClause.transaction=false
     if (filters.book_type) {
       if (filters.book_type === "Giveaway") {
         whereClause.is_for_giveaway = true;

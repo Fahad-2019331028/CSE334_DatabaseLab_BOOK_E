@@ -116,7 +116,7 @@ exports.confirmOrder = async (req, res) => {
     await order.save();
 
     // Update book's user_id to buyer's user_id
-    book.user_id = order.buyer_id;
+    // book.user_id = order.buyer_id;
     book.transaction = true;
     await book.save();
 

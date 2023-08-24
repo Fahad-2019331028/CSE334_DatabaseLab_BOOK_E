@@ -37,7 +37,7 @@ exports.getReviewsByRecipient = async (req, res) => {
     try {   
       const reviews = await Review.findAll({
         where: { recipient_id: user_id },
-        include: [{ model: User, as: 'Reviewer', attributes: ['username'] }],
+        include: [{ model: User, as: 'Reviewer', attributes: ['username','user_id'] }],
       });
   
       res.status(200).json(reviews);
