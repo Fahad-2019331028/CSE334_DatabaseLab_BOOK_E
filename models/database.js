@@ -26,7 +26,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// Define your models here and associate them if needed
 db.users = require('./User.js')(sequelize, DataTypes);
 db.books = require('./Book.js')(sequelize, DataTypes);
 db.orders = require('./Order.js')(sequelize, DataTypes);
@@ -34,14 +33,14 @@ db.reviews = require('./Review.js')(sequelize, Sequelize);
 // db.orders = require('./Order')(sequelize, Sequelize);
 // db.Post = require('./Post')(sequelize, Sequelize);
 db.ratings = require('./Rating')(sequelize, Sequelize);
-// Define more models here...
+db.genres = require('./Genre')(sequelize, Sequelize);
+
 
 db.sequelize.sync({force: false})
 .then(()=>{
   console.log("Yes. Re-sync done")
 })
-// Define associations if needed
-// For example:
+
 
 db.users.hasMany(db.books,{
   foreignKey: 'user_id',

@@ -22,6 +22,7 @@ app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/order', require('./routes/orderRoutes'));
 app.use('/api/review', require('./routes/reviewRoutes'));
 app.use('/api/rating', require('./routes/ratingRoutes'));
+app.use('/api/genre',require('./routes/genreRoutes'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

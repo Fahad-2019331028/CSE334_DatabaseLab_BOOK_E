@@ -1,7 +1,8 @@
 const db=require('../models/database')
-
+const { Op } = require('sequelize');
 const Review = db.reviews;
 const User = db.users;
+const Order = db.orders; 
 exports.addReview = async (req, res) => {
   console.log("Adding review")
   const { review, recipient_id } = req.body;
@@ -17,6 +18,27 @@ exports.addReview = async (req, res) => {
       existingReview.review = review;
       await existingReview.save();
       return res.json({ message: 'Rating updated successfully', review: existingReview });
+    }
+    const orders = await Order.findAll({
+      where: {
+        [Op.or]: [
+          { buyer_id: reviewer_id },
+          { seller_id: reviewer_id }
+        ]
+      }
+    });
+    console.log(reviewer_id)
+    const canAddReview = orders.some(order => 
+      (Number(order.buyer_id) === Number(recipient_id) && Number(order.seller_id) === Number(reviewer_id)) ||
+      (Number(order.seller_id) === Number(recipient_id) && Number(order.buyer_id) === Number(reviewer_id))
+    );
+    console.log(orders)
+    orders.some(order=>
+    console.log(order.buyer_id===recipient_id)
+    );
+    console.log(canAddReview)
+    if (!canAddReview) {
+      return res.status(400).json({ message: 'No direct connection for rating' });
     }
     const newreview = await Review.create({
       reviewer_id,

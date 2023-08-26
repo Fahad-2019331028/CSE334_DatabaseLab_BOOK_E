@@ -2,16 +2,14 @@ const db=require('../models/database')
 const User=db.users
 const Book=db.books
 const { Op } = require('sequelize');
-// const Book = require('../models/Book');
-// const User = require('../models/User');
 const Order = require('../models/Order');
 const e = require('express');
 exports.getAllBooks = async (req, res) => {
-  const page = req.query.page || 1; // Get the requested page from query parameters
+  const page = req.query.page || 1; 
   try {
     const { rows: books } = await Book.findAndCountAll({
       where: {
-        transaction: false, // Exclude books with transaction = true
+        transaction: false, // Exclude books which has been trasacted
       },
       include: {
         model: User,
@@ -51,7 +49,7 @@ exports.searchBooks = async (req, res) => {
   }
 };
 
-// const Book = require('../models/Book'); // Import the Book model
+
 exports.filterBooks = async (req, res) => {
   try {
     console.log("Filtering")
@@ -115,7 +113,7 @@ exports.getOrderableBooks = async (req, res) => {
 exports.addBook = async (req, res) => {
   try {
     console.log("Inside add")
-    const user_id = req.user.user_id; // Assuming you have user authentication implemented
+    const user_id = req.user.user_id; 
 
     const {
       title,
@@ -128,9 +126,7 @@ exports.addBook = async (req, res) => {
       price,
     } = req.body;
     console.log(req.body)
-    // if (!title || !author || !description || !book_condition) {
-    //   return res.status(400).json({ message: 'Please fill out all required fields.' });
-    // }
+
     let is_for_sale = false;
     let is_for_loan = false;
     let is_for_giveaway = false;
@@ -143,17 +139,11 @@ exports.addBook = async (req, res) => {
       is_for_giveaway = true;
     }
 
-    // Handle setting price to null if it's not provided
     let finalPrice = null;
     if (price !== undefined && price !== null && price !== '') {
       finalPrice = price;
     }
-    // let book_img_url
-    // if(req.file)
-    // {
-    //   book_img_url=req.file.path
-    //   console.log(req.file.path)
-    // }
+
     let transaction=false
     const book = await Book.create({
       title,
@@ -184,20 +174,18 @@ exports.addBook = async (req, res) => {
 
 
 exports.deleteBook = async (req, res) => {
-  const { id } = req.params; // Get the book ID from URL parameters
+  const { id } = req.params; 
 
   try {
-    // Find the book by ID
+
     const book = await Book.findByPk(id);
 
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
-
-    // Delete the book from the database
     await book.destroy();
 
-    res.json({ message: 'Book deleted successfully' }); // Send the success message as the response
+    res.json({ message: 'Book deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -205,38 +193,33 @@ exports.deleteBook = async (req, res) => {
 };
 
 exports.updateBook = async (req, res) => {
-  const { id } = req.params; // Get the book ID from URL parameters
+  const { id } = req.params;
 
   try {
-    // Find the book by ID
     const book = await Book.findByPk(id);
 
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
 
-    // Update the book attributes based on the request body
     book.title = req.body.title || book.title;
     book.author = req.body.author || book.author;
-    // ... update other attributes as needed ...
-
-    // Save the updated book in the database
     await book.save();
 
-    res.json(book); // Send the updated book data as the response
+    res.json(book); 
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
 exports.getBookById = async (req, res) => {
-  const { book_id } = req.params; // Get the book_id from URL parameters
+  const { book_id } = req.params; 
   console.log(book_id)
   console.log("Finding the book")
   try {
     const book = await Book.findOne({
       where: { book_id },
-      // include: { model: User, as: 'User', attributes: ['username'] },
+      include: { model: User, as: 'User', attributes: ['username'] },
     });
 
     if (!book) {
@@ -251,11 +234,11 @@ exports.getBookById = async (req, res) => {
 };
 
 exports.getBooksById = async (req, res) => {
-  const { user_id } = req.params; // Get the user_id from URL parameters
+  const { user_id } = req.params; 
 
   try {
     const books = await Book.findAll({
-      where: { user_id }, // Filter by user_id
+      where: { user_id }, 
       include: { model: User, as: 'User', attributes: ['username'] },
     });
 
@@ -281,8 +264,7 @@ exports.getUserById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    console.log(user)
-    // Return the user's profile information
+    console.log(user)    
     res.json(user);
   } catch (error) {
     console.error(error);

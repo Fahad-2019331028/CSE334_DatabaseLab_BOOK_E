@@ -24,7 +24,7 @@ exports.getUserProfile = async (req, res) => {
 };
 
 exports.editUserProfile = async (req, res) => {
-  const { name, phone_number, address,username,profile_picture,email,password } = req.body;
+  const { name, phone_number, address,username,profile_picture,email,password,confirm_password } = req.body;
 
   try {
     const user = await User.findByPk(req.user.user_id);
@@ -32,14 +32,29 @@ exports.editUserProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+    // const isMatch = await bcrypt.compare(password, user.password);
+    // console.log(isMatch)
     let change=null;
     let hashedPassword;
-    if(password)
-    {
-      const salt = await bcrypt.genSalt(10);
-      hashedPassword = await bcrypt.hash(password, salt);
-      change=1;
+    console.log(confirm_password)
+    const isMatch = await bcrypt.compare(password, user.password);
+
+// ...
+
+    if (confirm_password) {
+      if (password === confirm_password) {
+        const salt = await bcrypt.genSalt(10);
+        hashedPassword = await bcrypt.hash(confirm_password, salt);
+        change = 1;
+      } else {
+        console.log('Passwords do not match');
+        return res.status(400).json({ message: 'Passwords do not match' });
+      }
+    } else if (!isMatch) {
+      console.log('Invalid credentials');
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
+
 
     // Update user profile information
     user.name = name?name:user.name;
@@ -57,7 +72,7 @@ exports.editUserProfile = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
-};
+}; 
 exports.getUserInventory = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.user_id);

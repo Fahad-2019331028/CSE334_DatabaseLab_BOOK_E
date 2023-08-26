@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// const User = require('../models/User');
 const db=require('../models/database')
 
 const User=db.users
@@ -43,15 +42,13 @@ exports.loginUser = async (req, res) => {
 };
 
 
-// main model
 
-// main work
 exports.registerUser = async (req, res) => {
   console.log('Attempting user registration...');
   const { username, name, email, phone_number, address, password } = req.body;
   
   try {
-    // Check if user with the same email already exists
+
     let user = await User.findOne({ where: { email } });
 
     if (user) {
@@ -63,7 +60,6 @@ exports.registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create the user record in the database
     user = await User.create({
       username,
       name,
