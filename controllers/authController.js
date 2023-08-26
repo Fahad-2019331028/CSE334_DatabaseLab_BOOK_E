@@ -31,7 +31,7 @@ exports.loginUser = async (req, res) => {
       },
     };
 
-    jwt.sign(payload, '75655', { expiresIn: '1h' }, (error, token) => {
+    jwt.sign(payload, '75655', { expiresIn: '72h' }, (error, token) => {
       if (error) throw error;
       console.log('User logged in successfully');
       res.json({ token });

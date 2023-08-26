@@ -23,7 +23,6 @@ sequelize.authenticate()
 
 const db = {};
 
-
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 

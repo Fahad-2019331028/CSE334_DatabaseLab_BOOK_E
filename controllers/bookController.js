@@ -38,6 +38,7 @@ exports.searchBooks = async (req, res) => {
     const query = {
       where: {
         title: { [Op.like]: `%${searchQuery}%` },
+        transaction: false,
       },
     };
 
