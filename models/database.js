@@ -30,8 +30,6 @@ db.users = require('./User.js')(sequelize, DataTypes);
 db.books = require('./Book.js')(sequelize, DataTypes);
 db.orders = require('./Order.js')(sequelize, DataTypes);
 db.reviews = require('./Review.js')(sequelize, Sequelize);
-// db.orders = require('./Order')(sequelize, Sequelize);
-// db.Post = require('./Post')(sequelize, Sequelize);
 db.ratings = require('./Rating')(sequelize, Sequelize);
 db.genres = require('./Genre')(sequelize, Sequelize);
 

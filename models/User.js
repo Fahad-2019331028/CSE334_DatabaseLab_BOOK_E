@@ -35,9 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
   }, {
-    timestamps: false, // This will add createdAt and updatedAt columns
-    // underscored: true, // This will use snake_case for column names
+    timestamps: false, 
   });
-  // User.hasMany(Book)
   return User;
 };

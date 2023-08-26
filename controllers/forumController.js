@@ -1,7 +1,6 @@
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 
-// Create a new post
 exports.createPost = async (req, res) => {
   const { title, content, user_id } = req.body;
 
@@ -19,7 +18,6 @@ exports.createPost = async (req, res) => {
   }
 };
 
-// Get all posts
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.findAll({
@@ -39,7 +37,6 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-// Create a new comment
 exports.createComment = async (req, res) => {
   const { content, user_id, post_id } = req.body;
 

@@ -46,8 +46,8 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
       genre: {
-        type: DataTypes.STRING, // Assuming the genre is a string
-        allowNull: true, // You can set this to false if genre is required
+        type: DataTypes.STRING, 
+        allowNull: true, 
       },
       book_img_url: {
         type: DataTypes.STRING,
@@ -63,9 +63,6 @@ module.exports = (sequelize, DataTypes) => {
     }
     );
   
-    // Define associations or methods here if needed
-    // Book.belongsTo(User, { as: 'user'}); // Owner of the book
-    // Book.belongsTo(User, { as: 'orderedBy' }); // User who ordered the book
 
     return Book;
   };

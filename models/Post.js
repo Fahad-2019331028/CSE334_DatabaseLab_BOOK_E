@@ -28,11 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   
-    // Define associations or methods here if needed
-    // Post.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
     return Post;
   };
-  
-// Define a relationship between Post and User
-
